@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApplication1.Models;
 using WebApplication1.Data;
+using Microsoft.Extensions.DependencyModel;
 namespace WebApplication1.Services;
 
 public class DogService
@@ -72,6 +73,14 @@ public class DogService
     public List<Dog> GetOdd()
     {
         return _dogsContext.Dogs.ToList().FindAll(d => d.Id%2 ==1);
+    }
+
+    public List<Dog> GetPage(int page, int items)
+    {
+        return _dogsContext.Set<Dog>()
+                              .Skip(page*items)
+                              .Take(items)
+                              .ToList();
     }
 
  /*  public Dog GetRandom()

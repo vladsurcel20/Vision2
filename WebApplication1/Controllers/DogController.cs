@@ -75,5 +75,11 @@ namespace WebApplication1.Controllers {
             return Ok(_dogService.GetOdd());
         }
 
+        [HttpGet("PageItems")]
+        
+        public IActionResult GetItems(int page, int items)
+        {
+            return Ok(_dogService.GetPage(page, items));
+        }
     }
 }
