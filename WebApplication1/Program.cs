@@ -1,6 +1,7 @@
 
 using System.Xml.Linq;
 using WebApplication1.Services;
+using WebApplication1.Data;
 namespace WebApplication1
 
 {
@@ -16,7 +17,8 @@ namespace WebApplication1
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<DogService>();
+            builder.Services.AddScoped<DogService>();
+            builder.Services.AddDbContext<DogsContext>();
 
             var app = builder.Build();
 
