@@ -1,80 +1,83 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApplication1.Models;
+using WebApplication1.Data;
 namespace WebApplication1.Services;
 
 public class DogService
 {
+
+    private readonly DogsContext _dogsContext;
+
+    public DogService(DogsContext context)
+    { 
+        _dogsContext = context; 
+    }
     public bool IsIdUnique(int id)
     {
-        if (context.FirstOrDefault(d => d.Id == id) == null) return true;
+        if (_dogsContext.Set<Dog>().FirstOrDefault(d => d.Id == id) == null) return true;
         else return false;
-        /*if (dog.Age > 0 && dog.Age < 99) return true;
-        else return false; */
     }
 
     public bool IsIdUsed(int id)
     {
-        if (context.FirstOrDefault(d => d.Id == id) == null) return false;
+        if (_dogsContext.Set<Dog>().FirstOrDefault(d => d.Id == id) == null) return false;
         else return true;
     }
 
-    private List<Dog> context = new List<Dog> {
-            new Dog{Id =1, Name="Pitbull", Age=3, Color="black"},
-            new Dog{Id =2, Name="Shiba", Age=5, Color="brown"},
-        };
-
-    public DogService() { }
+    
 
     public List<Dog> GetAll()
     {
-        return context;
+        return _dogsContext.Dogs.ToList();
     }
 
     public Dog GetById(int id)
     {
-        return context.FirstOrDefault(d => d.Id == id);
+        return _dogsContext.Set<Dog>().ToList().FirstOrDefault(d => d.Id == id);
     } 
 
     public List<Dog> FindByName(string name)
-    {
-        List<Dog> list = new List<Dog>();
-        foreach (Dog dog in context)
-        {
-            if (dog.Name == name)
-            {
-                list.Add(dog);
-            }
-        }
-        return list;
+    {      
+            return _dogsContext.Set<Dog>().ToList().FindAll(d => d.Name == name);
+            //_dogsContext.SaveChanges();           
+
     }
 
     public void Add(Dog dog)
     {
-        context.Add(dog);
+        _dogsContext.Add(dog);
+        _dogsContext.SaveChanges();
     }
 
     public void Remove(int id)
     {
-        Dog foundDog = context.FirstOrDefault(d => d.Id == id);
-        context.Remove(foundDog);
+        Dog foundDog = _dogsContext.Dogs.FirstOrDefault(d => d.Id == id);
+        _dogsContext.Remove(foundDog);
+        _dogsContext.SaveChanges();
     }
 
         public void Update(Dog dog)
     {
-        Dog newDog = context.FirstOrDefault(d => d.Id == dog.Id);
+        Dog newDog = _dogsContext.Dogs.FirstOrDefault(d => d.Id == dog.Id);
         //if (newDog != null && IsValid(dog))
-        
-        context.Remove(newDog); 
-        context.Add(dog); 
+
+        _dogsContext.Remove(newDog);
+        _dogsContext.Add(dog); 
+        _dogsContext.SaveChanges();
         
     }
 
+    public List<Dog> GetOdd()
+    {
+        return _dogsContext.Dogs.ToList().FindAll(d => d.Id%2 ==1);
+    }
 
-    public Dog GetRandom()
+ /*  public Dog GetRandom()
     {
         Random rnd = new Random();
         int index = rnd.Next(context.Count);
         return context[index];
-    }
-}
+    } */
+} 

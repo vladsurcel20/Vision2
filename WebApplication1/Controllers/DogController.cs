@@ -68,5 +68,12 @@ namespace WebApplication1.Controllers {
             return Ok();
         }
 
+        [HttpGet("GetOdd")]
+
+        public IActionResult GetOdd()
+        {
+            return Ok(_dogService.GetOdd());
+        }
+
     }
 }
