@@ -1,4 +1,4 @@
-namespace WebApplication1
+namespace Day1
 {
     public class WeatherForecast
     {
