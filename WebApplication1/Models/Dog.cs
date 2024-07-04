@@ -15,4 +15,6 @@ namespace WebApplication1.Models
         public string Color { get; set; }
 
     }
+
+    // Testare fetch
 }
