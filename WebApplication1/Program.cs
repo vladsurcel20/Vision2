@@ -12,6 +12,16 @@ namespace WebApplication1
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:5173")
+                              .WithMethods("GET", "POST", "PUT", "DELETE")
+                              .AllowAnyHeader();
+                    });
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,6 +40,8 @@ namespace WebApplication1
             }
 
             app.UseHttpsRedirection();
+            app.UseRouting();   
+            app.UseCors();
 
             app.UseAuthorization();
 

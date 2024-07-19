@@ -3,6 +3,7 @@ using WebApplication1.Services;
 using WebApplication1.Models;
 using Microsoft.AspNetCore.HttpLogging;
 using System.Drawing;
+using Microsoft.AspNetCore.Cors;
 
 namespace WebApplication1.Controllers {
     [ApiController]
@@ -46,7 +47,7 @@ namespace WebApplication1.Controllers {
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromBody]int id)
         {
             if (_dogService.IsIdUsed(id))
             {
@@ -58,7 +59,7 @@ namespace WebApplication1.Controllers {
 
 
         [HttpPut]
-        public IActionResult Put(Dog dog)
+        public IActionResult Put([FromBody]Dog dog)
         {
              if(_dogService.IsIdUsed(dog.Id) == false)
             {
